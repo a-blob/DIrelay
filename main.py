@@ -57,8 +57,10 @@ def irc_bot(discord_queue, irc_queue):
 
     def on_pubmsg(self, connection, event):
       if event.target == os.environ['IRC_CHANNEL']:
+        # Extract the nickname from the source
+        nick = event.source.split('!', 1)[0]
         # Put the message into the queue
-        irc_queue.put(f"<{event.source}> {event.arguments[0]}")
+        irc_queue.put(f"<{nick}> {event.arguments[0]}")
 
     def on_all_raw_messages(self, connection, event):
       print(event.arguments[0])
